@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GameHub - Play. Compete. Win.</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">🎮 GameHub</div>
+
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#games">Games</a>
+            <a href="#leaderboard">Leaderboard</a>
+        </div>
+    </nav>
+
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+
+        <div class="hero-content">
+
+            <h1>Play. Compete. Win. 🎮</h1>
+
+            <p>
+                Welcome to GameHub! Choose your favorite game,
+                challenge yourself and reach the top of the leaderboard.
+            </p>
+
+            <button onclick="scrollToGames()">
+                Play Now 🚀
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- Games Section -->
+    <section id="games" class="games-section">
+
+        <h2>Choose Your Game 🎯</h2>
+
+        <div class="game-container">
+
+            <div class="game-card">
+                <div class="game-icon">🐍</div>
+
+                <h3>Snake Game</h3>
+
+                <p>
+                    Control the snake, eat food and score as much as possible!
+                </p>
+
+                <button onclick="startGame('snake')">
+                    Play Snake
+                </button>
+            </div>
+
+
+            <div class="game-card">
+                <div class="game-icon">🧠</div>
+
+                <h3>Memory Game</h3>
+
+                <p>
+                    Test your memory by matching all the cards.
+                </p>
+
+                <button onclick="startGame('memory')">
+                    Play Memory
+                </button>
+            </div>
+
+
+            <div class="game-card">
+                <div class="game-icon">❓</div>
+
+                <h3>Quiz Game</h3>
+
+                <p>
+                    Answer questions and test your knowledge.
+                </p>
+
+                <button onclick="startGame('quiz')">
+                    Play Quiz
+                </button>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Leaderboard -->
+    <section id="leaderboard" class="leaderboard">
+
+        <h2>🏆 Top Players</h2>
+
+        <div class="leaderboard-box">
+
+            <p>🥇 Player 1 - 1000 Points</p>
+            <p>🥈 Player 2 - 850 Points</p>
+            <p>🥉 Player 3 - 700 Points</p>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <p>
+            © 2026 GameHub | Built with ❤️ and 🎮
+        </p>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
