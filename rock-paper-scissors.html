@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GameHub - Rock Paper Scissors</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: white;
+            text-align: center;
+        }
+
+        nav {
+            background: #111827;
+            padding: 20px;
+        }
+
+        nav a {
+            color: #38bdf8;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        h1 {
+            margin-top: 40px;
+            font-size: 38px;
+        }
+
+        .subtitle {
+            color: #cbd5e1;
+            margin-bottom: 30px;
+        }
+
+        .game-container {
+            width: 650px;
+            max-width: 90%;
+            margin: auto;
+            background: #1e293b;
+            padding: 35px;
+            border-radius: 20px;
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 35px;
+            font-size: 20px;
+        }
+
+        .score-box {
+            background: #334155;
+            padding: 15px 25px;
+            border-radius: 12px;
+            min-width: 140px;
+        }
+
+        .score-box span {
+            display: block;
+            font-size: 30px;
+            color: #38bdf8;
+            margin-top: 8px;
+        }
+
+        .choices {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .choice {
+            width: 130px;
+            height: 130px;
+            border: 2px solid #38bdf8;
+            border-radius: 20px;
+            background: #334155;
+            color: white;
+            font-size: 60px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .choice:hover {
+            transform: translateY(-8px) scale(1.05);
+            background: #475569;
+        }
+
+        .result {
+            margin-top: 25px;
+            min-height: 100px;
+            background: #0f172a;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        #result-text {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        #choices-result {
+            font-size: 22px;
+            color: #cbd5e1;
+        }
+
+        .reset-btn {
+            margin-top: 25px;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            background: #38bdf8;
+            color: #0f172a;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .reset-btn:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 30px;
+            }
+
+            .choice {
+                width: 90px;
+                height: 90px;
+                font-size: 42px;
+            }
+
+            .score-box {
+                min-width: 100px;
+                padding: 12px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="index.html">⬅ Back to GameHub</a>
+    </nav>
+
+    <h1>✊ Rock Paper Scissors ✋</h1>
+
+    <p class="subtitle">
+        Choose your move and challenge the computer! ✌️
+    </p>
+
+    <div class="game-container">
+
+        <div class="score-board">
+
+            <div class="score-box">
+                You
+                <span id="player-score">0</span>
+            </div>
+
+            <div class="score-box">
+                Computer
+                <span id="computer-score">0</span>
+            </div>
+
+        </div>
+
+
+        <h2>Choose Your Move</h2>
+
+        <div class="choices">
+
+            <button class="choice" onclick="playGame('rock')">
+                ✊
+            </button>
+
+            <button class="choice" onclick="playGame('paper')">
+                ✋
+            </button>
+
+            <button class="choice" onclick="playGame('scissors')">
+                ✌️
+            </button>
+
+        </div>
+
+
+        <div class="result">
+
+            <div id="result-text">
+                Let's Play! 🎮
+            </div>
+
+            <div id="choices-result">
+                Choose Rock, Paper or Scissors
+            </div>
+
+        </div>
+
+
+        <button class="reset-btn" onclick="resetGame()">
+            Reset Score 🔄
+        </button>
+
+    </div>
+
+
+    <script>
+
+        let playerScore = 0;
+        let computerScore = 0;
+
+        const choices = ["rock", "paper", "scissors"];
+
+        const emoji = {
+            rock: "✊",
+            paper: "✋",
+            scissors: "✌️"
+        };
+
+
+        function playGame(playerChoice) {
+
+            const computerChoice =
+                choices[Math.floor(Math.random() * choices.length)];
+
+            let result = "";
+
+
+            if (playerChoice === computerChoice) {
+
+                result = "It's a Draw! 🤝";
+
+            }
+
+            else if (
+                (playerChoice === "rock" && computerChoice === "scissors") ||
+                (playerChoice === "paper" && computerChoice === "rock") ||
+                (playerChoice === "scissors" && computerChoice === "paper")
+            ) {
+
+                result = "You Win! 🎉";
+
+                playerScore++;
+
+            }
+
+            else {
+
+                result = "Computer Wins! 🤖";
+
+                computerScore++;
+
+            }
+
+
+            document.getElementById("result-text").innerText = result;
+
+            document.getElementById("choices-result").innerText =
+                "You: " +
+                emoji[playerChoice] +
+                "   VS   Computer: " +
+                emoji[computerChoice];
+
+
+            document.getElementById("player-score").innerText =
+                playerScore;
+
+            document.getElementById("computer-score").innerText =
+                computerScore;
+
+        }
+
+
+        function resetGame() {
+
+            playerScore = 0;
+            computerScore = 0;
+
+            document.getElementById("player-score").innerText = "0";
+
+            document.getElementById("computer-score").innerText = "0";
+
+            document.getElementById("result-text").innerText =
+                "Let's Play! 🎮";
+
+            document.getElementById("choices-result").innerText =
+                "Choose Rock, Paper or Scissors";
+
+        }
+
+    </script>
+
+</body>
+
+</html>
