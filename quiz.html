@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GameHub - Quiz Game</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: white;
+            text-align: center;
+        }
+
+        nav {
+            background: #111827;
+            padding: 20px;
+        }
+
+        nav a {
+            color: #38bdf8;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        h1 {
+            margin-top: 35px;
+        }
+
+        .quiz-container {
+            width: 600px;
+            max-width: 90%;
+            margin: 40px auto;
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 15px;
+        }
+
+        #question-number {
+            color: #38bdf8;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        #question {
+            font-size: 24px;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #334155;
+            border-radius: 10px;
+            background: #334155;
+            color: white;
+            cursor: pointer;
+            font-size: 17px;
+            text-align: left;
+            transition: 0.3s;
+        }
+
+        .option:hover:not(:disabled) {
+            transform: scale(1.02);
+            border-color: #38bdf8;
+        }
+
+        .option:disabled {
+            cursor: not-allowed;
+        }
+
+        .correct {
+            background: #16a34a;
+            border-color: #22c55e;
+        }
+
+        .wrong {
+            background: #dc2626;
+            border-color: #ef4444;
+        }
+
+        #next-btn,
+        #restart-btn {
+            margin-top: 25px;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            background: #38bdf8;
+            color: #0f172a;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #next-btn:hover,
+        #restart-btn:hover {
+            transform: scale(1.05);
+        }
+
+        #next-btn {
+            display: none;
+        }
+
+        #result {
+            display: none;
+        }
+
+        #result h2 {
+            font-size: 30px;
+        }
+
+        #final-score {
+            font-size: 22px;
+            margin: 20px 0;
+            color: #38bdf8;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="index.html">⬅ Back to GameHub</a>
+    </nav>
+
+    <h1>❓ Quiz Game</h1>
+
+    <div class="quiz-container">
+
+        <div id="quiz">
+
+            <div id="question-number"></div>
+
+            <h2 id="question"></h2>
+
+            <div id="options" class="options"></div>
+
+            <button id="next-btn" onclick="nextQuestion()">
+                Next Question ➡️
+            </button>
+
+        </div>
+
+
+        <div id="result">
+
+            <h2>🎉 Quiz Completed!</h2>
+
+            <p id="final-score"></p>
+
+            <button id="restart-btn" onclick="restartQuiz()">
+                Play Again 🔄
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const questions = [
+
+            {
+                question: "Which language is mainly used for web page structure?",
+                options: ["Python", "HTML", "Java", "C++"],
+                answer: 1
+            },
+
+            {
+                question: "Which language is commonly used to add interactivity to websites?",
+                options: ["JavaScript", "SQL", "C", "Java"],
+                answer: 0
+            },
+
+            {
+                question: "What does CSS stand for?",
+                options: [
+                    "Computer Style Sheets",
+                    "Cascading Style Sheets",
+                    "Creative Style System",
+                    "Colorful Style Sheets"
+                ],
+                answer: 1
+            },
+
+            {
+                question: "Which symbol is used for an ID selector in CSS?",
+                options: [".", "#", "@", "&"],
+                answer: 1
+            },
+
+            {
+                question: "Which company created the JavaScript language?",
+                options: ["Microsoft", "Netscape", "Google", "Apple"],
+                answer: 1
+            }
+
+        ];
+
+
+        let currentQuestion = 0;
+        let score = 0;
+
+
+        function loadQuestion() {
+
+            const questionData = questions[currentQuestion];
+
+            document.getElementById("question-number").innerText =
+                "Question " +
+                (currentQuestion + 1) +
+                " of " +
+                questions.length;
+
+            document.getElementById("question").innerText =
+                questionData.question;
+
+            const optionsContainer =
+                document.getElementById("options");
+
+            optionsContainer.innerHTML = "";
+
+            document.getElementById("next-btn").style.display = "none";
+
+
+            questionData.options.forEach((option, index) => {
+
+                const button = document.createElement("button");
+
+                button.classList.add("option");
+
+                button.innerText =
+                    String.fromCharCode(65 + index) +
+                    ". " +
+                    option;
+
+                button.onclick = function () {
+                    selectAnswer(index, button);
+                };
+
+                optionsContainer.appendChild(button);
+
+            });
+
+        }
+
+
+        function selectAnswer(selectedIndex, selectedButton) {
+
+            const correctAnswer =
+                questions[currentQuestion].answer;
+
+            const allOptions =
+                document.querySelectorAll(".option");
+
+
+            allOptions.forEach((button, index) => {
+
+                button.disabled = true;
+
+                if (index === correctAnswer) {
+                    button.classList.add("correct");
+                }
+
+            });
+
+
+            if (selectedIndex === correctAnswer) {
+
+                score++;
+
+            } else {
+
+                selectedButton.classList.add("wrong");
+
+            }
+
+
+            document.getElementById("next-btn").style.display =
+                "inline-block";
+
+        }
+
+
+        function nextQuestion() {
+
+            currentQuestion++;
+
+            if (currentQuestion < questions.length) {
+
+                loadQuestion();
+
+            } else {
+
+                showResult();
+
+            }
+
+        }
+
+
+        function showResult() {
+
+            document.getElementById("quiz").style.display = "none";
+
+            document.getElementById("result").style.display = "block";
+
+            document.getElementById("final-score").innerText =
+                "Your Score: " +
+                score +
+                " / " +
+                questions.length;
+
+        }
+
+
+        function restartQuiz() {
+
+            currentQuestion = 0;
+            score = 0;
+
+            document.getElementById("quiz").style.display = "block";
+
+            document.getElementById("result").style.display = "none";
+
+            loadQuestion();
+
+        }
+
+
+        loadQuestion();
+
+    </script>
+
+</body>
+
+</html>
