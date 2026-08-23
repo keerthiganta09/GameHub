@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GameHub - Memory Game</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: white;
+            text-align: center;
+        }
+
+        nav {
+            background: #111827;
+            padding: 20px;
+        }
+
+        nav a {
+            color: #38bdf8;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        h1 {
+            margin-top: 30px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px;
+            font-size: 20px;
+        }
+
+        .game-board {
+            width: 440px;
+            max-width: 95%;
+            margin: 30px auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .card {
+            aspect-ratio: 1;
+            background: #1e293b;
+            border: 2px solid #38bdf8;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card.flipped,
+        .card.matched {
+            background: #334155;
+        }
+
+        .card.matched {
+            border-color: #22c55e;
+        }
+
+        button {
+            padding: 12px 25px;
+            margin-bottom: 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            background: #38bdf8;
+            color: #0f172a;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="index.html">⬅ Back to GameHub</a>
+    </nav>
+
+    <h1>🧠 Memory Game</h1>
+
+    <div class="stats">
+        <div>Moves: <span id="moves">0</span></div>
+        <div>Matches: <span id="matches">0</span></div>
+    </div>
+
+    <div class="game-board" id="gameBoard"></div>
+
+    <button onclick="startGame()">Restart Game 🔄</button>
+
+    <script>
+        const emojis = [
+            "🎮", "🐍", "🚀", "🏆",
+            "🎯", "🧠", "🔥", "⭐"
+        ];
+
+        let cards = [];
+        let flippedCards = [];
+        let moves = 0;
+        let matches = 0;
+        let lockBoard = false;
+
+        function startGame() {
+            cards = [...emojis, ...emojis]
+                .sort(() => Math.random() - 0.5);
+
+            flippedCards = [];
+            moves = 0;
+            matches = 0;
+            lockBoard = false;
+
+            document.getElementById("moves").innerText = moves;
+            document.getElementById("matches").innerText = matches;
+
+            renderBoard();
+        }
+
+        function renderBoard() {
+            const board = document.getElementById("gameBoard");
+
+            board.innerHTML = "";
+
+            cards.forEach((emoji, index) => {
+                const card = document.createElement("div");
+
+                card.classList.add("card");
+                card.dataset.index = index;
+                card.dataset.emoji = emoji;
+
+                card.innerText = "❓";
+
+                card.addEventListener("click", flipCard);
+
+                board.appendChild(card);
+            });
+        }
+
+        function flipCard() {
+            if (
+                lockBoard ||
+                this.classList.contains("flipped") ||
+                this.classList.contains("matched")
+            ) {
+                return;
+            }
+
+            this.classList.add("flipped");
+            this.innerText = this.dataset.emoji;
+
+            flippedCards.push(this);
+
+            if (flippedCards.length === 2) {
+                moves++;
+
+                document.getElementById("moves").innerText = moves;
+
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            const firstCard = flippedCards[0];
+            const secondCard = flippedCards[1];
+
+            if (firstCard.dataset.emoji === secondCard.dataset.emoji) {
+                firstCard.classList.add("matched");
+                secondCard.classList.add("matched");
+
+                flippedCards = [];
+
+                matches++;
+
+                document.getElementById("matches").innerText = matches;
+
+                if (matches === emojis.length) {
+                    setTimeout(() => {
+                        alert(
+                            "🎉 Congratulations! You completed the game in " +
+                            moves +
+                            " moves!"
+                        );
+                    }, 300);
+                }
+            } else {
+                lockBoard = true;
+
+                setTimeout(() => {
+                    firstCard.classList.remove("flipped");
+                    secondCard.classList.remove("flipped");
+
+                    firstCard.innerText = "❓";
+                    secondCard.innerText = "❓";
+
+                    flippedCards = [];
+                    lockBoard = false;
+                }, 800);
+            }
+        }
+
+        startGame();
+    </script>
+
+</body>
+</html>
