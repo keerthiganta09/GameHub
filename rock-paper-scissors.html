@@ -32,7 +32,7 @@
         }
 
         h1 {
-            margin-top: 40px;
+            margin-top: 35px;
             font-size: 38px;
         }
 
@@ -41,32 +41,86 @@
             margin-bottom: 30px;
         }
 
-        .game-container {
-            width: 650px;
-            max-width: 90%;
-            margin: auto;
+        .container {
+            width: 700px;
+            max-width: 92%;
+            margin: 30px auto;
             background: #1e293b;
             padding: 35px;
             border-radius: 20px;
         }
 
+        .mode-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        button {
+            border: none;
+            border-radius: 12px;
+            padding: 14px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            background: #38bdf8;
+            color: #0f172a;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        .secondary-btn {
+            background: #334155;
+            color: white;
+            border: 1px solid #38bdf8;
+        }
+
+        .section {
+            display: none;
+            margin-top: 25px;
+        }
+
+        input {
+            width: 100%;
+            max-width: 400px;
+            padding: 14px;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+            margin: 8px 0;
+        }
+
+        .game-section {
+            display: none;
+        }
+
         .score-board {
             display: flex;
-            justify-content: space-around;
-            margin-bottom: 35px;
-            font-size: 20px;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 25px 0;
         }
 
         .score-box {
+            min-width: 180px;
             background: #334155;
             padding: 15px 25px;
             border-radius: 12px;
-            min-width: 140px;
+        }
+
+        .score-box h3 {
+            margin: 0;
+            font-size: 18px;
         }
 
         .score-box span {
             display: block;
-            font-size: 30px;
+            font-size: 32px;
             color: #38bdf8;
             margin-top: 8px;
         }
@@ -76,76 +130,48 @@
             justify-content: center;
             gap: 20px;
             flex-wrap: wrap;
-            margin: 30px 0;
+            margin: 25px 0;
         }
 
         .choice {
-            width: 130px;
-            height: 130px;
-            border: 2px solid #38bdf8;
-            border-radius: 20px;
+            width: 120px;
+            height: 120px;
+            font-size: 55px;
             background: #334155;
             color: white;
-            font-size: 60px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .choice:hover {
-            transform: translateY(-8px) scale(1.05);
-            background: #475569;
+            border: 2px solid #38bdf8;
         }
 
         .result {
-            margin-top: 25px;
-            min-height: 100px;
             background: #0f172a;
-            border-radius: 15px;
             padding: 20px;
+            border-radius: 12px;
+            min-height: 80px;
+            font-size: 20px;
+            margin-top: 20px;
         }
 
-        #result-text {
-            font-size: 24px;
+        .room-code {
+            color: #38bdf8;
+            font-size: 26px;
             font-weight: bold;
-            margin-bottom: 15px;
         }
 
-        #choices-result {
-            font-size: 22px;
-            color: #cbd5e1;
-        }
-
-        .reset-btn {
-            margin-top: 25px;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 10px;
-            background: #38bdf8;
-            color: #0f172a;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .reset-btn:hover {
-            transform: scale(1.05);
+        #back-to-menu {
+            margin-top: 20px;
+            background: #64748b;
+            color: white;
         }
 
         @media (max-width: 600px) {
             h1 {
-                font-size: 30px;
+                font-size: 28px;
             }
 
             .choice {
                 width: 90px;
                 height: 90px;
                 font-size: 42px;
-            }
-
-            .score-box {
-                min-width: 100px;
-                padding: 12px;
-                font-size: 15px;
             }
         }
     </style>
@@ -160,100 +186,445 @@
     <h1>✊ Rock Paper Scissors ✋</h1>
 
     <p class="subtitle">
-        Choose your move and challenge the computer! ✌️
+        Play with Computer or challenge your friend anywhere! 🌍
     </p>
 
-    <div class="game-container">
+
+    <!-- MAIN MENU -->
+
+    <div class="container" id="main-menu">
+
+        <h2>Choose Game Mode 🎮</h2>
+
+        <div class="mode-buttons">
+
+            <button onclick="playWithComputer()">
+                🤖 Play with Computer
+            </button>
+
+            <button onclick="showCreateRoom()">
+                🏠 Create Room
+            </button>
+
+            <button onclick="showJoinRoom()">
+                🔑 Join Room
+            </button>
+
+        </div>
+
+
+        <!-- CREATE ROOM -->
+
+        <div class="section" id="create-room-section">
+
+            <h2>Create Multiplayer Room 🏠</h2>
+
+            <input
+                type="text"
+                id="create-player-name"
+                placeholder="Enter your name"
+            >
+
+            <br>
+
+            <button onclick="createRoom()">
+                Create Room
+            </button>
+
+            <div id="created-room-message"></div>
+
+        </div>
+
+
+        <!-- JOIN ROOM -->
+
+        <div class="section" id="join-room-section">
+
+            <h2>Join Friend's Room 🔑</h2>
+
+            <input
+                type="text"
+                id="join-player-name"
+                placeholder="Enter your name"
+            >
+
+            <br>
+
+            <input
+                type="text"
+                id="join-room-code"
+                placeholder="Enter Room Code"
+            >
+
+            <br>
+
+            <button onclick="joinRoom()">
+                Join Game
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- GAME SECTION -->
+
+    <div class="container game-section" id="game-section">
+
+        <h2 id="game-title">Game</h2>
 
         <div class="score-board">
 
             <div class="score-box">
-                You
+                <h3 id="player-name-display">You</h3>
                 <span id="player-score">0</span>
             </div>
 
             <div class="score-box">
-                Computer
-                <span id="computer-score">0</span>
+                <h3 id="opponent-name-display">Computer</h3>
+                <span id="opponent-score">0</span>
             </div>
 
         </div>
-
 
         <h2>Choose Your Move</h2>
 
         <div class="choices">
 
-            <button class="choice" onclick="playGame('rock')">
+            <button class="choice" onclick="makeMove('rock')">
                 ✊
             </button>
 
-            <button class="choice" onclick="playGame('paper')">
+            <button class="choice" onclick="makeMove('paper')">
                 ✋
             </button>
 
-            <button class="choice" onclick="playGame('scissors')">
+            <button class="choice" onclick="makeMove('scissors')">
                 ✌️
             </button>
 
         </div>
 
-
-        <div class="result">
-
-            <div id="result-text">
-                Let's Play! 🎮
-            </div>
-
-            <div id="choices-result">
-                Choose Rock, Paper or Scissors
-            </div>
-
+        <div class="result" id="result">
+            Choose your move! 🎮
         </div>
 
-
-        <button class="reset-btn" onclick="resetGame()">
-            Reset Score 🔄
+        <button id="back-to-menu" onclick="backToMenu()">
+            ⬅ Back to Menu
         </button>
 
     </div>
 
 
+    <!-- SOCKET.IO -->
+
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+
     <script>
 
+        /*
+        IMPORTANT:
+
+        Temporary backend URL.
+        Later localhost:3000 ni deployed backend URL tho replace cheddam.
+        */
+
+        const socket = io("http://localhost:3000");
+
+        let gameMode = "";
+        let currentRoom = "";
+        let playerName = "";
+
         let playerScore = 0;
-        let computerScore = 0;
+        let opponentScore = 0;
 
-        const choices = ["rock", "paper", "scissors"];
-
-        const emoji = {
+        const emojis = {
             rock: "✊",
             paper: "✋",
             scissors: "✌️"
         };
 
 
-        function playGame(playerChoice) {
+        function hideAllSections() {
+
+            document
+                .getElementById("create-room-section")
+                .style.display = "none";
+
+            document
+                .getElementById("join-room-section")
+                .style.display = "none";
+
+        }
+
+
+        function showCreateRoom() {
+
+            hideAllSections();
+
+            document
+                .getElementById("create-room-section")
+                .style.display = "block";
+
+        }
+
+
+        function showJoinRoom() {
+
+            hideAllSections();
+
+            document
+                .getElementById("join-room-section")
+                .style.display = "block";
+
+        }
+
+
+        /* PLAY WITH COMPUTER */
+
+        function playWithComputer() {
+
+            gameMode = "computer";
+
+            playerScore = 0;
+            opponentScore = 0;
+
+            document
+                .getElementById("main-menu")
+                .style.display = "none";
+
+            document
+                .getElementById("game-section")
+                .style.display = "block";
+
+            document
+                .getElementById("game-title")
+                .innerText = "🤖 Playing with Computer";
+
+            document
+                .getElementById("player-name-display")
+                .innerText = "You";
+
+            document
+                .getElementById("opponent-name-display")
+                .innerText = "Computer";
+
+            updateScores();
+
+            document
+                .getElementById("result")
+                .innerText = "Choose your move! 🎮";
+
+        }
+
+
+        /* CREATE ROOM */
+
+        function generateRoomCode() {
+
+            return Math.random()
+                .toString(36)
+                .substring(2, 8)
+                .toUpperCase();
+
+        }
+
+
+        function createRoom() {
+
+            playerName = document
+                .getElementById("create-player-name")
+                .value
+                .trim();
+
+            if (!playerName) {
+
+                alert("Please enter your name!");
+
+                return;
+            }
+
+            currentRoom = generateRoomCode();
+
+            socket.emit("createRoom", {
+                roomCode: currentRoom,
+                playerName: playerName
+            });
+
+        }
+
+
+        socket.on("roomCreated", (data) => {
+
+            gameMode = "multiplayer";
+
+            document
+                .getElementById("created-room-message")
+                .innerHTML =
+                "<br>Room Created! 🎉<br><br>" +
+                "Share this code with your friend:<br><br>" +
+                "<span class='room-code'>" +
+                data.roomCode +
+                "</span><br><br>" +
+                "Waiting for your friend...";
+
+        });
+
+
+        /* JOIN ROOM */
+
+        function joinRoom() {
+
+            playerName = document
+                .getElementById("join-player-name")
+                .value
+                .trim();
+
+            currentRoom = document
+                .getElementById("join-room-code")
+                .value
+                .trim()
+                .toUpperCase();
+
+            if (!playerName || !currentRoom) {
+
+                alert("Please enter your name and room code!");
+
+                return;
+            }
+
+            socket.emit("joinRoom", {
+                roomCode: currentRoom,
+                playerName: playerName
+            });
+
+        }
+
+
+        /* MULTIPLAYER START */
+
+        socket.on("gameStart", (data) => {
+
+            gameMode = "multiplayer";
+
+            playerScore = 0;
+            opponentScore = 0;
+
+            document
+                .getElementById("main-menu")
+                .style.display = "none";
+
+            document
+                .getElementById("game-section")
+                .style.display = "block";
+
+
+            document
+                .getElementById("game-title")
+                .innerText =
+                "🌍 Multiplayer Room: " + currentRoom;
+
+
+            const me = data.players.find(
+                player => player.name === playerName
+            );
+
+            const opponent = data.players.find(
+                player => player.name !== playerName
+            );
+
+
+            if (me && opponent) {
+
+                document
+                    .getElementById("player-name-display")
+                    .innerText = me.name;
+
+                document
+                    .getElementById("opponent-name-display")
+                    .innerText = opponent.name;
+
+            }
+
+            document
+                .getElementById("result")
+                .innerText =
+                "Opponent connected! Choose your move 🎮";
+
+        });
+
+
+        /* MAKE MOVE */
+
+        function makeMove(choice) {
+
+            if (gameMode === "computer") {
+
+                playComputerGame(choice);
+
+            }
+
+            else if (gameMode === "multiplayer") {
+
+                socket.emit("playerChoice", {
+                    roomCode: currentRoom,
+                    choice: choice
+                });
+
+                document
+                    .getElementById("result")
+                    .innerText =
+                    "Move selected! Waiting for opponent...";
+
+            }
+
+        }
+
+
+        /* COMPUTER GAME LOGIC */
+
+        function playComputerGame(playerChoice) {
+
+            const choices = [
+                "rock",
+                "paper",
+                "scissors"
+            ];
 
             const computerChoice =
-                choices[Math.floor(Math.random() * choices.length)];
+                choices[
+                    Math.floor(
+                        Math.random() * choices.length
+                    )
+                ];
 
-            let result = "";
+            let resultText = "";
 
 
             if (playerChoice === computerChoice) {
 
-                result = "It's a Draw! 🤝";
+                resultText = "It's a Draw! 🤝";
 
             }
 
             else if (
-                (playerChoice === "rock" && computerChoice === "scissors") ||
-                (playerChoice === "paper" && computerChoice === "rock") ||
-                (playerChoice === "scissors" && computerChoice === "paper")
+
+                (playerChoice === "rock" &&
+                    computerChoice === "scissors")
+
+                ||
+
+                (playerChoice === "paper" &&
+                    computerChoice === "rock")
+
+                ||
+
+                (playerChoice === "scissors" &&
+                    computerChoice === "paper")
+
             ) {
 
-                result = "You Win! 🎉";
+                resultText = "You Win! 🎉";
 
                 playerScore++;
 
@@ -261,45 +632,139 @@
 
             else {
 
-                result = "Computer Wins! 🤖";
+                resultText = "Computer Wins! 🤖";
 
-                computerScore++;
+                opponentScore++;
 
             }
 
 
-            document.getElementById("result-text").innerText = result;
-
-            document.getElementById("choices-result").innerText =
+            document
+                .getElementById("result")
+                .innerText =
                 "You: " +
-                emoji[playerChoice] +
-                "   VS   Computer: " +
-                emoji[computerChoice];
+                emojis[playerChoice] +
+                "  VS  Computer: " +
+                emojis[computerChoice] +
+                "\n\n" +
+                resultText;
 
 
-            document.getElementById("player-score").innerText =
-                playerScore;
-
-            document.getElementById("computer-score").innerText =
-                computerScore;
+            updateScores();
 
         }
 
 
-        function resetGame() {
+        /* MULTIPLAYER RESULT */
+
+        socket.on("roundResult", (data) => {
+
+            const me = data.players.find(
+                player => player.name === playerName
+            );
+
+            const opponent = data.players.find(
+                player => player.name !== playerName
+            );
+
+
+            if (me && opponent) {
+
+                playerScore = me.score;
+
+                opponentScore = opponent.score;
+
+                updateScores();
+
+            }
+
+
+            let resultText = "";
+
+            if (data.result === "draw") {
+
+                resultText = "It's a Draw! 🤝";
+
+            }
+
+            else {
+
+                const winner =
+                    data.result === "player1"
+                    ? data.players[0].name
+                    : data.players[1].name;
+
+                resultText =
+                    winner + " Wins this round! 🎉";
+
+            }
+
+
+            document
+                .getElementById("result")
+                .innerText =
+                resultText +
+                "\n\nChoose your next move! 🎮";
+
+        });
+
+
+        /* UPDATE SCORES */
+
+        function updateScores() {
+
+            document
+                .getElementById("player-score")
+                .innerText = playerScore;
+
+            document
+                .getElementById("opponent-score")
+                .innerText = opponentScore;
+
+        }
+
+
+        /* ERRORS */
+
+        socket.on("roomError", (message) => {
+
+            alert(message);
+
+        });
+
+
+        socket.on("opponentLeft", (message) => {
+
+            alert(message);
+
+            document
+                .getElementById("result")
+                .innerText = message;
+
+        });
+
+
+        /* BACK TO MENU */
+
+        function backToMenu() {
+
+            document
+                .getElementById("game-section")
+                .style.display = "none";
+
+            document
+                .getElementById("main-menu")
+                .style.display = "block";
+
+            hideAllSections();
+
+            gameMode = "";
+
+            currentRoom = "";
 
             playerScore = 0;
-            computerScore = 0;
 
-            document.getElementById("player-score").innerText = "0";
-
-            document.getElementById("computer-score").innerText = "0";
-
-            document.getElementById("result-text").innerText =
-                "Let's Play! 🎮";
-
-            document.getElementById("choices-result").innerText =
-                "Choose Rock, Paper or Scissors";
+            opponentScore = 0;
 
         }
 
